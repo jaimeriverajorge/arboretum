@@ -38,6 +38,7 @@ def draw_keypoints_and_boxes(outputs, image):
                            3, (0, 0, 255), thickness=-1, lineType=cv2.FILLED)
 
             # draw the lines joining keypoints
+            '''
             for ie, e in enumerate(edges):
                 # get different colors for the edges
                 rgb = matplotlib.colors.hsv_to_rgb([
@@ -48,7 +49,7 @@ def draw_keypoints_and_boxes(outputs, image):
                 cv2.line(image, (keypoints[e, 0][0], keypoints[e, 1][0]),
                          (keypoints[e, 0][1], keypoints[e, 1][1]),
                          tuple(rgb), 2, lineType=cv2.LINE_AA)
-
+            '''
             # draw the bounding boxes around the objects
             cv2.rectangle(image, (int(boxes[0]), int(boxes[1])), (int(boxes[2]), int(boxes[3])),
                           color=(0, 255, 0),
