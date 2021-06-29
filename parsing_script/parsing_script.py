@@ -98,4 +98,10 @@ def makeOaks(num_images):
             curr += 1
             sinus_list.append(x, y)
 
+            oak_dict = {"id": 123}
+            oak_dict.id
+
+            # total_dict {}
+        my_oak = oakImage(id, blade_tip)
+
 # return OakDict, or Oak_num1
