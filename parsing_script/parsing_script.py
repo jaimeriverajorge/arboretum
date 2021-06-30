@@ -84,6 +84,16 @@ for i in l_counter_csv:
 # this code will depend on the order that the columns are in within
 # the outputted csv file
 
+# function to turn strings inside the tuples to integers
+
+
+def int_tuple(my_tup):
+    tup = ()
+    for v in my_tup:
+        v_int = (int(v),)
+        tup += v_int
+    return tup
+
 
 def make_dict(column, image_number, curr_index):
     ret_dict = {}
@@ -99,6 +109,7 @@ def make_dict(column, image_number, curr_index):
             # a list of each integer within curr_vall
             # cast into a tuple
             my_tup = tuple(re.findall('\d+', curr_val))
+            my_tup = int_tuple(my_tup)
             ret_dict[j+1] = my_tup
             curr_index += 1
     return ret_dict, curr_index
@@ -137,26 +148,41 @@ def makeOaks(i):
     # call methods to create all tuples and
     # dictionaries needed for the landmarks
     blade_tip, curr_index = make_tuple(i, curr_index)
+    blade_tip = int_tuple(blade_tip)
     sinus_dict, curr_index = make_dict("Each sinus", i, curr_index)
     lobe_tip_dict, curr_index = make_dict(
         "Each lobe tip where vein reaches margin", i, curr_index)
     petiole_tip, curr_index = make_tuple(i, curr_index)
+    petiole_tip = int_tuple(petiole_tip)
     petiole_blade, curr_index = make_tuple(i, curr_index)
+    petiole_blade = int_tuple(petiole_blade)
     minor_dict, curr_index = make_dict(
         "Each midrib/minor secondary vein", i, curr_index)
     major_dict, curr_index = make_dict(
         "Each midrib/major secondary vein intersection", i, curr_index)
     max_width, curr_index = make_tuple(i, curr_index)
+    max_width = int_tuple(max_width)
     min_width, curr_index = make_tuple(i, curr_index)
+    min_width = int_tuple(min_width)
     next_width, curr_index = make_tuple(i, curr_index)
+    next_width = int_tuple(next_width)
 
     myOak = oakImage(subject_id, blade_tip, sinus_dict, lobe_tip_dict, petiole_tip,
                      petiole_blade, major_dict, minor_dict, max_width, min_width, next_width)
     return myOak
 
 
+num_images = 2
 first_oak = makeOaks(0)
-print(first_oak.max_width)
+
+oak_dict = {}
+print(first_oak.sinus_major)
+print(first_oak.next_width)
+for i in range(num_images):
+    currentOak = makeOaks(i)
+    oak_dict[i] = currentOak
+print(oak_dict)
+
 
 # TODO: figure out best way to create 240 oak objects (for loop adding to dictionary?),
 # change tuple values from strings to integers, could create separate method for it ?
