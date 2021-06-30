@@ -175,12 +175,14 @@ def makeOaks(i):
 num_images = 2
 first_oak = makeOaks(0)
 
+
 oak_dict = {}
 print(first_oak.sinus_major)
 print(first_oak.next_width)
 for i in range(num_images):
     currentOak = makeOaks(i)
     oak_dict[i] = currentOak
+
 print(oak_dict)
 
 
