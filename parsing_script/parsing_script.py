@@ -23,7 +23,7 @@ class oakImage:
         self.petiole_tip = petiole_tip  # tuple
         self.petiole_blade = petiole_blade  # tuple
         self.major_secondary = major_secondary  # dictionary
-        self.minor_seconadary = minor_secondary  # dictionary
+        self.minor_secondary = minor_secondary  # dictionary
         self.max_width = max_width  # 4-tuple
         self.min_width = min_width  # 4-tuple
         self.next_width = next_width  # 4-tuple
@@ -90,8 +90,10 @@ for i in l_counter_csv:
 def int_tuple(my_tup):
     tup = ()
     for v in my_tup:
-        v_int = (int(v),)
-        tup += v_int
+        # get rid of '1' and '2' from the lines
+        if v != '1' and v != '2':
+            v_int = (int(v),)
+            tup += v_int
     return tup
 
 
@@ -147,15 +149,12 @@ def makeOaks(i):
     # first coordinate, will be the blade_tip
     # call methods to create all tuples and
     # dictionaries needed for the landmarks
-    blade_tip, curr_index = make_tuple(i, curr_index)
-    blade_tip = int_tuple(blade_tip)
+    blade_tip, curr_index = make_dict("Tip of Blade", i, curr_index)
     sinus_dict, curr_index = make_dict("Each sinus", i, curr_index)
     lobe_tip_dict, curr_index = make_dict(
         "Each lobe tip where vein reaches margin", i, curr_index)
-    petiole_tip, curr_index = make_tuple(i, curr_index)
-    petiole_tip = int_tuple(petiole_tip)
-    petiole_blade, curr_index = make_tuple(i, curr_index)
-    petiole_blade = int_tuple(petiole_blade)
+    petiole_tip, curr_index = make_dict("Start of petiole", i, curr_index)
+    petiole_blade, curr_index = make_dict("Petiole meets blade", i, curr_index)
     minor_dict, curr_index = make_dict(
         "Each midrib/minor secondary vein", i, curr_index)
     major_dict, curr_index = make_dict(
@@ -174,16 +173,16 @@ def makeOaks(i):
 
 num_images = 2
 first_oak = makeOaks(0)
-
+print(first_oak.max_width)
 
 oak_dict = {}
-print(first_oak.sinus_major)
-print(first_oak.next_width)
+# print(first_oak.sinus_major)
+# print(first_oak.next_width)
 for i in range(num_images):
     currentOak = makeOaks(i)
     oak_dict[i] = currentOak
 
-print(oak_dict)
+# print(oak_dict)
 
 
 # TODO: figure out best way to create 240 oak objects (for loop adding to dictionary?),
