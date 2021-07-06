@@ -173,7 +173,7 @@ def makeOaks(i):
 
 num_images = 2
 first_oak = makeOaks(0)
-print(first_oak.max_width)
+# print(first_oak.max_width)
 
 oak_dict = {}
 # print(first_oak.sinus_major)
