@@ -83,7 +83,7 @@ for epoch in range(config.EPOCHS):
     train_loss.append(train_epoch_loss)
     val_loss.append(val_epoch_loss)
     print(f"Train Loss: {train_epoch_loss:.4f}")
-    print(f"Val Loss: {val_epoch_loss:.4f}")
+    print(f'Val Loss: {val_epoch_loss:.4f}')
 
 # loss plots
 plt.figure(figsize=(10, 7))

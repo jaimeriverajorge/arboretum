@@ -29,17 +29,6 @@ class oakImage:
         self.next_width = next_width  # 4-tuple
 
 
-# OR
-# could store each instance of a class as a dictionary, with lists of tuples for each coordinate
-"""
-l_counter = {"blade_tip": [(0, 0)], "sinus_major": [(0, 0)],
-             "lobe_tip_margin": [(0, 0)],
-             "petiole_tip": [(0, 0)], "petiole_blade": [(0, 0)],
-             "major_secondary": [(0, 0)],
-             "minor_seconadary": [(0, 0)],
-             "max_width": [(0, 0)], "min_width": [(0, 0)], "next_width": [(0, 0)]}
-"""
-
 # convert csv file to pandas dataframe for easier access
 df = pd.read_csv("unreconciled.csv")
 
@@ -84,10 +73,9 @@ for i in l_counter_csv:
 # this code will depend on the order that the columns are in within
 # the outputted csv file
 
-# function to turn strings inside the tuples to integers
-
 
 def int_tuple(my_tup):
+    # function to turn strings inside the tuples to integers
     tup = ()
     for v in my_tup:
         # get rid of '1' and '2' from the lines
@@ -98,6 +86,7 @@ def int_tuple(my_tup):
 
 
 def make_dict(column, image_number, curr_index):
+    # function to make a dictionary of the landmark that is passed in
     ret_dict = {}
     for j in range(l_counter_csv[column]):
         # need to test if index is empty first
@@ -129,6 +118,9 @@ def make_tuple(image_number, current):
 
 
 def makeOaks(i):
+    # function to make an oak object from the image
+    # parameter i is the image number that we are on,
+    # which is the index of the dataframe that we want
     sinus_dict = {}
     lobe_tip_dict = {}
     petiole_tip = ()
@@ -169,24 +161,3 @@ def makeOaks(i):
     myOak = oakImage(subject_id, blade_tip, sinus_dict, lobe_tip_dict, petiole_tip,
                      petiole_blade, major_dict, minor_dict, max_width, min_width, next_width)
     return myOak
-
-
-num_images = 2
-first_oak = makeOaks(0)
-# print(first_oak.max_width)
-
-oak_dict = {}
-# print(first_oak.sinus_major)
-# print(first_oak.next_width)
-for i in range(num_images):
-    currentOak = makeOaks(i)
-    oak_dict[i] = currentOak
-
-# print(oak_dict)
-
-
-# TODO: figure out best way to create 240 oak objects (for loop adding to dictionary?),
-# change tuple values from strings to integers, could create separate method for it ?
-# line tuples need to get rid of 1, 1, 2, 2 values, depending on how we want them for the
-# input data on the ML model
-#

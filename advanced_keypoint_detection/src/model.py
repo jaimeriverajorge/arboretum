@@ -4,17 +4,17 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import pretrainedmodels
 
 
 class FaceKeypointResNet50(nn.Module):
     def __init__(self, pretrained, requires_grad):
         super(FaceKeypointResNet50, self).__init__()
         if pretrained == True:
-            self.model = torch.hub.load(
-                'pytorch/vision:v0.9.0', 'resnet50', pretrained=True)
+            self.model = pretrainedmodels.__dict__[
+                'resnet50'](pretrained='imagenet')
         else:
-            self.model = torch.hub.load(
-                'pytorch/vision:v0.9.0', 'resnet50', pretrained=False)
+            self.model = pretrainedmodels.__dict__['resnet50'](pretrained=None)
 
         if requires_grad == True:
             for param in self.model.parameters():
@@ -27,6 +27,10 @@ class FaceKeypointResNet50(nn.Module):
 
         # change the final layer
         self.l0 = nn.Linear(2048, 136)
+
+        #self.model.features = []
+        # for key, value in self.model._modules.items():
+        #    self.model.features.append(value)
 
     def forward(self, x):
         # get the batch size only, ignore (c, h, w)
