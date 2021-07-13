@@ -6,11 +6,16 @@ import matplotlib.image as mpimg
 import pandas as pd
 import ast
 
-# read the csv file with the matching subject ID and file names
-df = pd.read_csv("nfn-private-project-subjects.csv")
+
 # hard coded number of images for now
 num_images = 2
 
+"""
+This was a function to find the file name corresponding to the subject_id,
+it is no longer needed as the Zooniverse data now contains the file name
+
+# read the csv file with the matching subject ID and file names
+df = pd.read_csv("nfn-private-project-subjects.csv")
 
 def find_name(subject_ID):
     # function to find the file name corresponding to the subject_id
@@ -20,9 +25,11 @@ def find_name(subject_ID):
         if currID == subject_ID:
             # ast.literal_eval takes in the string from the
             # metadata column and turns it into a dict
+            # {"Filename": "IM-EA-2345.jpg"}
             name_dict = ast.literal_eval(df.iloc[i][4])
             name = name_dict["Filename"]
     return name
+"""
 
 
 # creating dictionary object that will hold all of the images,
@@ -74,8 +81,8 @@ for sub_id in oak_dict:
     # get the current oak object, located at the corresponding key
     currOak = oak_dict[sub_id]
     # get the matching image name
-    image_name = find_name(sub_id)
-    myImage = mpimg.imread(image_name)
+    image_name = currOak.file_name
+    myImage = mpimg.imread(f"oak_images_small/{image_name}")
 
     plt.subplot(1, 2, img_counter)
     plt.imshow(myImage)

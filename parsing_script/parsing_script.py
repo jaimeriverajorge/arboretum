@@ -15,7 +15,7 @@ class oakImage:
 
     def __init__(self, id, blade_tip, sinus_major, lobe_tip_margin, petiole_tip,
                  petiole_blade, major_secondary, minor_secondary, max_width,
-                 min_width, next_width):
+                 min_width, next_width, file_name):
         self.id = id  # int
         self.blade_tip = blade_tip  # tuple
         self.sinus_major = sinus_major  # dictionary
@@ -27,19 +27,20 @@ class oakImage:
         self.max_width = max_width  # 4-tuple
         self.min_width = min_width  # 4-tuple
         self.next_width = next_width  # 4-tuple
+        self.file_name = file_name
 
 
 # convert csv file to pandas dataframe for easier access
-df = pd.read_csv("unreconciled.csv")
+df = pd.read_csv("landmark-data.csv")
 
 
 # Dictionary of landmarks names, matching exactly what they are in csv file
-l_counter_csv = {"Tip of Blade": 0, "Each sinus": 0,
-                 "Each lobe tip where vein reaches margin": 0,
-                 "Start of petiole": 0, "Petiole meets blade": 0,
-                 "Each midrib/minor secondary vein": 0,
-                 "Each midrib/major secondary vein intersection": 0,
-                 "Width": 0, "Min. sinus width": 0, "Sinus next Length": 0}
+l_counter_csv = {"blade_tip": 0, "sinus_major": 0,
+                 "lobe_tip_margin": 0,
+                 "petiole_tip": 0, "petiole_blade": 0,
+                 "minor_secondary": 0,
+                 "major_secondary": 0,
+                 "max_width": 0, "min_width": 0, "next_width": 0}
 
 # step 1:
 # for loop to increment values of landmark counter to correspond with
@@ -51,8 +52,8 @@ for i in l_counter_csv:
     for name in df.columns:
         # grab starting index if corresponding to "tip of blade"
         # in dictionary and in csv file
-        if name[0:12] == "Tip of Blade" and i == name[0:len(i)]:
-            l_counter_csv["Tip of Blade"] += 1
+        if name[0:9] == "blade_tip" and i == name[0:len(i)]:
+            l_counter_csv["blade_tip"] += 1
             # assign start index to index counter (3 in the original file)
             start_index = index_counter
         elif i == name[0:len(i)]:
@@ -141,16 +142,16 @@ def makeOaks(i):
     # first coordinate, will be the blade_tip
     # call methods to create all tuples and
     # dictionaries needed for the landmarks
-    blade_tip, curr_index = make_dict("Tip of Blade", i, curr_index)
-    sinus_dict, curr_index = make_dict("Each sinus", i, curr_index)
+    blade_tip, curr_index = make_dict("blade_tip", i, curr_index)
+    sinus_dict, curr_index = make_dict("sinus_major", i, curr_index)
     lobe_tip_dict, curr_index = make_dict(
-        "Each lobe tip where vein reaches margin", i, curr_index)
-    petiole_tip, curr_index = make_dict("Start of petiole", i, curr_index)
-    petiole_blade, curr_index = make_dict("Petiole meets blade", i, curr_index)
+        "lobe_tip_margin", i, curr_index)
+    petiole_tip, curr_index = make_dict("petiole_tip", i, curr_index)
+    petiole_blade, curr_index = make_dict("petiole_blade", i, curr_index)
     minor_dict, curr_index = make_dict(
-        "Each midrib/minor secondary vein", i, curr_index)
+        "minor_secondary", i, curr_index)
     major_dict, curr_index = make_dict(
-        "Each midrib/major secondary vein intersection", i, curr_index)
+        "major_secondary", i, curr_index)
     max_width, curr_index = make_tuple(i, curr_index)
     max_width = int_tuple(max_width)
     min_width, curr_index = make_tuple(i, curr_index)
@@ -158,6 +159,8 @@ def makeOaks(i):
     next_width, curr_index = make_tuple(i, curr_index)
     next_width = int_tuple(next_width)
 
+    file_name = df.iloc[i][curr_index]
+
     myOak = oakImage(subject_id, blade_tip, sinus_dict, lobe_tip_dict, petiole_tip,
-                     petiole_blade, major_dict, minor_dict, max_width, min_width, next_width)
+                     petiole_blade, major_dict, minor_dict, max_width, min_width, next_width, file_name)
     return myOak
