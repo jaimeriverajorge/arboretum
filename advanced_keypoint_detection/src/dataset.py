@@ -58,7 +58,7 @@ class FaceKeypointDataset(Dataset):
 
 # get the training and validation data samples
 training_samples, valid_samples = train_test_split(
-    f"{config.ROOT_PATH}/training_frames_keypoints.csv", config.TEST_SPLIT)
+    f"{config.ROOT_PATH}/lobe_tip_training.csv", config.TEST_SPLIT)
 
 train_data = FaceKeypointDataset(
     training_samples, f"{config.ROOT_PATH}/training")
