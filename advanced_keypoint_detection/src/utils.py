@@ -44,7 +44,7 @@ def dataset_keypoints_plot(data):
     training.
     """
     plt.figure(figsize=(10, 10))
-    for i in range(9):
+    for i in range(3):
         sample = data[i]
         img = sample['image']
         # when I plotted my points onto the image, I did not
@@ -53,7 +53,7 @@ def dataset_keypoints_plot(data):
         img = np.transpose(img, (1, 2, 0))
         # the third parameter in subplot specifies
         # which index of the subplot we are plotting at
-        plt.subplot(3, 3, i+1)
+        plt.subplot(1, 3, i+1)
         plt.imshow(img)
         keypoints = sample['keypoints']
         for j in range(len(keypoints)):
