@@ -6,8 +6,8 @@ OUTPUT_PATH = '../outputs'
 
 # learning parameters
 BATCH_SIZE = 12
-LR = 0.001
-EPOCHS = 1000
+LR = 0.01
+EPOCHS = 100
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 # train/test split

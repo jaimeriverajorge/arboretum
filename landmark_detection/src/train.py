@@ -18,6 +18,9 @@ model = FaceKeypointResNet50(
 optimizer = optim.Adam(model.parameters(), lr=config.LR)
 criterion = nn.SmoothL1Loss()
 
+# add a learning rate scheduler
+scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=40, gamma=0.1)
+
 # training function
 
 
@@ -41,7 +44,7 @@ def fit(model, dataloader, data):
         train_running_loss += loss.item()
         loss.backward()
         optimizer.step()
-
+    scheduler.step()
     train_loss = train_running_loss / counter
     return train_loss
 
@@ -67,7 +70,7 @@ def validate(model, dataloader, data, epoch):
             valid_running_loss += loss.item()
             # plot the predicted validation keypoints after every
             # predefined number of epochs (doing 5 this time)
-            if (epoch+1) % 25 == 0 and i == 0:
+            if (epoch+1) % 5 == 0 and i == 0:
                 utils.valid_keypoints_plot(image, outputs, keypoints, epoch)
 
     valid_loss = valid_running_loss / counter
@@ -82,8 +85,10 @@ for epoch in range(config.EPOCHS):
     val_epoch_loss = validate(model, valid_loader, valid_data, epoch)
     train_loss.append(train_epoch_loss)
     val_loss.append(val_epoch_loss)
+    curr_lr = scheduler.get_last_lr()
     print(f"Train Loss: {train_epoch_loss:.4f}")
     print(f'Val Loss: {val_epoch_loss:.4f}')
+    print(f'Current LR: {curr_lr}')
 
 # loss plots
 plt.figure(figsize=(10, 7))
