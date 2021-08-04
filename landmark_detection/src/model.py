@@ -26,7 +26,7 @@ class FaceKeypointResNet50(nn.Module):
             print('Freezing intermediate layer parameters...')
 
         # change the final layer
-        self.l0 = nn.Linear(2048, 36)
+        self.l0 = nn.Linear(2048, 34)
 
         #self.model.features = []
         # for key, value in self.model._modules.items():
